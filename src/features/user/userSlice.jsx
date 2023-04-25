@@ -37,6 +37,26 @@ export const loginUser = createAsyncThunk(
   }
 );
 
+export const updateUser = createAsyncThunk(
+  "user/updateUser",
+  async (user, thunkAPI) => {
+    try {
+      const resp = await customFetch.patch("/auth/updateUser", user, {
+        headers: {
+          authorization: `Bearer ${thunkAPI.getState().user.user.token}`,
+        },
+      });
+      return resp.data;
+    } catch (error) {
+      if (error.response.status === 401) {
+        thunkAPI.dispatch(logoutUser());
+        return thunkAPI.rejectWithValue("Unauthorized! Logging Out");
+      }
+      return thunkAPI.rejectWithValue(error.response.data.msg);
+    }
+  }
+);
+
 const userSlice = createSlice({
   name: "user",
   initialState,
@@ -48,10 +68,6 @@ const userSlice = createSlice({
       state.user = null;
       state.isSidebarOpen = false;
       removeUserFromLocalStorage();
-    },
-    updateUser: (state, payload) => {
-      console.log(payload.userData);
-      // state.user = action.userData;
     },
   },
   extraReducers: {
@@ -83,9 +99,23 @@ const userSlice = createSlice({
       state.isLoading = false;
       toast.error(payload);
     },
+    [updateUser.pending]: (state) => {
+      state.isLoading = true;
+    },
+    [updateUser.fulfilled]: (state, { payload }) => {
+      const { user } = payload;
+      state.isLoading = false;
+      state.user = user;
+      addUserToLocalStorage(user);
+      toast.success(`User data updated`);
+    },
+    [updateUser.rejected]: (state, { payload }) => {
+      state.isLoading = false;
+      toast.error(payload);
+    },
   },
 });
 
-export const { toggleSidebar, logoutUser, updateUser } = userSlice.actions;
+export const { toggleSidebar, logoutUser } = userSlice.actions;
 
 export default userSlice.reducer;

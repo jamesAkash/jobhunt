@@ -24,6 +24,8 @@ const Profile = () => {
       toast.error("Please Fill Out All Fields");
       return;
     }
+
+    dispatch(updateUser(userData));
   };
 
   const handleChange = (e) => {
