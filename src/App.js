@@ -8,6 +8,7 @@ import {
   AllJobs,
   Stats,
   SharedLayout,
+  TestComponent,
 } from "./pages/dashboard";
 
 function App() {
@@ -26,6 +27,7 @@ function App() {
           <Route path="all-jobs" element={<AllJobs />} />
           <Route path="add-job" element={<AddJob />} />
           <Route path="profile" element={<Profile />} />
+          <Route path="test" element={<TestComponent />} />
         </Route>
         <Route path="landing" element={<Landing />} />
         <Route path="register" element={<Register />} />
