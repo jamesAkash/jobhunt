@@ -4,6 +4,7 @@ import styled from "styled-components";
 import Logo from "./Logo";
 import NavLinks from "./NavLinks";
 
+//SIDEBAR FOR BIG SCREEN
 const BigSidebar = () => {
   const { isSidebarOpen } = useSelector((store) => store.user);
   // const dispatch = useDispatch();

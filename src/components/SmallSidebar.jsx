@@ -7,6 +7,7 @@ import { useDispatch, useSelector } from "react-redux";
 import links from "../utils/links";
 import NavLinks from "./NavLinks";
 
+//MODAL SIDEBAR
 const SmallSidebar = () => {
   const { isSidebarOpen } = useSelector((store) => store.user);
   const dispatch = useDispatch();

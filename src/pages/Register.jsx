@@ -26,6 +26,7 @@ const Register = () => {
 
   const onSubmit = (e) => {
     e.preventDefault();
+
     const { name, email, password, isMember } = values;
     // if isMember is false then only check for name
     if (!email || !password || (!isMember && !name)) {
@@ -36,6 +37,7 @@ const Register = () => {
       dispatch(loginUser({ email: email, password: password }));
       return;
     }
+
     dispatch(registerUser({ email, name, password }));
   };
 
@@ -79,6 +81,18 @@ const Register = () => {
         />
         <button type="submit" className="btn btn-block" disabled={isLoading}>
           {isLoading ? "loading..." : "submit"}
+        </button>
+        <button
+          type="button"
+          className="btn btn-block btn-hipster"
+          disabled={isLoading}
+          onClick={() => {
+            dispatch(
+              loginUser({ email: "testUser@test.com", password: "secret" })
+            );
+          }}
+        >
+          {isLoading ? "loading..." : "Demo"}
         </button>
         <p>
           {values.isMember ? "Not a member yet?" : "Already a member?"}

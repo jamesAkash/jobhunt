@@ -28,7 +28,7 @@ export const createJob = createAsyncThunk(
           authorization: `Bearer ${thunkAPI.getState().user.user.token}`,
         },
       });
-      thunkAPI.dispatch(clearValues);
+      thunkAPI.dispatch(clearValues());
       return resp.data;
     } catch (error) {
       if (error.response.status === 401) {
@@ -51,6 +51,26 @@ export const deleteJob = createAsyncThunk(
         },
       });
       thunkAPI.dispatch(getAllJobs());
+      toast.success("Job deleted");
+      return resp.data;
+    } catch (error) {
+      thunkAPI.dispatch(hideLoading());
+      return thunkAPI.rejectWithValue(error.response.data.msg);
+    }
+  }
+);
+
+export const editJob = createAsyncThunk(
+  "job/editJob",
+  async ({ jobId, job }, thunkAPI) => {
+    try {
+      const resp = await customFetch.patch(`jobs/${jobId}`, job, {
+        headers: {
+          authorization: `Bearer ${thunkAPI.getState().user.user.token}`,
+        },
+      });
+      thunkAPI.dispatch(clearValues());
+      toast.success("Job Edited");
       return resp.data;
     } catch (error) {
       thunkAPI.dispatch(hideLoading());
@@ -70,6 +90,9 @@ const jobSlice = createSlice({
     clearValues: () => {
       return { ...initialState };
     },
+    setEditJob: (state, { payload }) => {
+      return { ...state, isEditing: true, ...payload };
+    },
     extraReducers: {
       [createJob.pending]: (state) => {
         state.isLoading = true;
@@ -82,10 +105,21 @@ const jobSlice = createSlice({
         state.isLoading = false;
         toast.error(payload);
       },
+      [editJob.pending]: (state) => {
+        state.isLoading = true;
+      },
+      [editJob.fulfilled]: (state) => {
+        state.isLoading = false;
+        toast.success("Job Modified...");
+      },
+      [editJob.rejected]: (state, { payload }) => {
+        state.isLoading = false;
+        toast.error(payload);
+      },
     },
   },
 });
 
-export const { handleChange, clearValues } = jobSlice.actions;
+export const { handleChange, clearValues, setEditJob } = jobSlice.actions;
 
 export default jobSlice.reducer;
