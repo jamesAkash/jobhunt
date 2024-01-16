@@ -13,13 +13,12 @@ const Landing = () => {
         {/* info */}
         <div className="info">
           <h1>
-            Job <span>Tracking App</span>
+            Personal <span>Job Tracking App</span>
           </h1>
           <p>
-            Beard locavore farm-to-table keffiyeh bicycle rights. Neutra pickled
-            cornhole pinterest you probably haven't heard of them sustainable
-            vape live-edge, artisan irony fanny pack. Taiyaki mlkshk try-hard
-            subway tile street art.
+            Keep track of all your job applies, Never miss an oppurtunity.
+            Interactive Job tracking capabilities where you can list all your
+            pending,upcoming and shortlisted jobs with date, time and location.
           </p>
           <Link className="btn btn-hero" to="/register">
             Login/Register
